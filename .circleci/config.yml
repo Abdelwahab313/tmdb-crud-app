@@ -1,0 +1,44 @@
+version: 2.1
+
+workflows:
+  build-test-deploy:
+    jobs:
+      - build-and-test
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:20.18
+      - image: cimg/postgres:16.4
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+
+    environment:
+          NODE_ENV: test
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+
+    steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - checkout
+      - restore_cache:
+          key: v1-deps-{{ checksum "package.json" }}
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "package.json" }}
+      - run:
+          name: Run linter
+          command: yarn lint
+      - run:
+          name: Run Unit tests
+          command: yarn test
+      - run:
+          name: Build application
+          command: yarn build
