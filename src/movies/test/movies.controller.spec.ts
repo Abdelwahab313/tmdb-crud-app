@@ -37,6 +37,7 @@ describe('MoviesController', () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(mockMovie);
 
       expect(await controller.findOne('1')).toBe(mockMovie);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(service.findOne).toHaveBeenCalledWith(1);
     });
 
@@ -44,6 +45,8 @@ describe('MoviesController', () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(null);
 
       await expect(controller.findOne('1')).rejects.toThrow(NotFoundException);
+      
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(service.findOne).toHaveBeenCalledWith(1);
     });
   });
