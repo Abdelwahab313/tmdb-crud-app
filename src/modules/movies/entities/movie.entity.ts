@@ -8,12 +8,12 @@ export class Movie {
   @Column()
   title: string;
 
+  @Column()
+  description: string;
+
   @Column({ type: 'date' })
   releaseDate: Date;
 
-  @Column('simple-array')
-  genres: string[];
-
   @Column('float')
-  rating: number;
+  averageRating: number;
 }

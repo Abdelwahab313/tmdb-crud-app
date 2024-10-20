@@ -1,18 +1,24 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import ormConfig from './config/ormConfig';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import createTypeOrmConfig from './config/ormConfig';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { MoviesModule } from './modules/movies/movies.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (): TypeOrmModuleOptions => ({
-        ...ormConfig,
-      }),
+      useFactory: createTypeOrmConfig,
       inject: [ConfigService],
     }),
+    AuthModule,
+    UsersModule,
+    MoviesModule,
   ],
   controllers: [],
   providers: [],
