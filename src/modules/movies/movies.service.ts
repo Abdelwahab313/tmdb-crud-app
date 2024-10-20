@@ -1,9 +1,8 @@
-import { Injectable, UseGuards } from '@nestjs/common';
-import { Movie } from './entities/movie.entity';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationDto } from './dto/pagination.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Movie } from './entities/movie.entity';
 
 @Injectable()
 export class MoviesService {

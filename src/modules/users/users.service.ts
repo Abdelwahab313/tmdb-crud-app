@@ -7,15 +7,15 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async findOne(username: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { username } });
+    return this.userRepository.findOne({ where: { username } });
   }
 
   async create(user: Partial<User>): Promise<User> {
-    const newUser = this.usersRepository.create(user);
-    return this.usersRepository.save(newUser);
+    const newUser = this.userRepository.create(user);
+    return this.userRepository.save(newUser);
   }
 }
